@@ -1,2 +1,3 @@
-# ComfyUI-Teeth
-In order to make it easier to use the ComfyUI, I have made some optimizations and integrations to some commonly used nodes.
+增加 Index List, 获取List中的元素
+增加 TextSplitByDelimiter, 分割字符串
+
