@@ -12,7 +12,13 @@ class FindContours:
                 "image": ("IMAGE",),
                 "threshold_thresh": (
                     "INT",
-                    {"default": 180, "min": 0, "max": 255, "step": 1},
+                    {
+                        "default": 180,
+                        "min": 0,
+                        "max": 255,
+                        "step": 1,
+                        "display": "slider",
+                    },
                 ),
                 "min_width": (
                     "INT",
