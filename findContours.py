@@ -37,11 +37,19 @@ class FindContours:
                     {"default": 33, "min": 0, "max": 1000000, "step": 1},
                 ),
             },
+            "optional": {},
         }
 
-    RETURN_TYPES = ("LIST", "MASK")
-    RETURN_NAMES = ("Contour_List", "MASK")
-
+    RETURN_TYPES = ("LIST", "MASK", "MASK", "MASK", "IMAGE", "INT")
+    RETURN_NAMES = (
+        "Contour_List",
+        "ContoursMask",
+        "GrayMask",
+        "BinaryMask",
+        "markedImage",
+        "numContoursFound",
+    )
+    OUTPUT_NODE = True
     FUNCTION = "findContours"
     CATEGORY = "Teeth"
 
@@ -67,7 +75,8 @@ class FindContours:
         # 初始化轮廓信息列表
         contours_list = []
         # 创建一个普通的mask用来显示轮廓
-        mask = np.zeros_like(gray_image, dtype=np.uint8)  # 创建一个全0的mask
+        contoursMask = np.zeros_like(gray_image, dtype=np.uint8)  # 创建一个全0的mask
+        gray_image_rgb = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
         for contour in contours:
             # 计算轮廓的面积
             area = cv2.contourArea(contour)
@@ -108,11 +117,26 @@ class FindContours:
                         "min_rect_center": (int(center_x), int(center_y)),
                     }
                 )
-                cv2.drawContours(mask, [contour], -1, 255, -1)
+                cv2.drawContours(gray_image_rgb, [contour], -1, (0, 255, 0), 1)
+                cv2.drawContours(contoursMask, [contour], -1, 255, -1)
+        contoured_image_rgb = torch.from_numpy(gray_image_rgb).unsqueeze(0) / 255.0
 
         # 返回mask和轮廓信息列表
         print(f"filter {len(contours_list)} contours.")
-        # 将mask转换为[B, H, W]格式，符合ComfyUI的MASK格式
-        mask = torch.from_numpy(mask).unsqueeze(0) / 255.0
 
-        return (contours_list, mask)
+        # 将mask转换为[B, H, W]格式，符合ComfyUI的MASK格式
+        contoursMask = torch.from_numpy(contoursMask).unsqueeze(0) / 255.0
+        gray_image = torch.from_numpy(gray_image).unsqueeze(0) / 255.0
+        binaryImage = torch.from_numpy(binary_image).unsqueeze(0) / 255.0
+        result = (
+            contours_list,
+            contoursMask,
+            gray_image,
+            binaryImage,
+            contoured_image_rgb,
+            len(contours_list),
+        )
+        return {
+            "ui": {"text": f"total Found {len(contours_list)} contours."},
+            "result": result,
+        }
