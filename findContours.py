@@ -36,6 +36,14 @@ class FindContours:
                     "INT",
                     {"default": 33, "min": 0, "max": 1000000, "step": 1},
                 ),
+                "detect_white_contours": (
+                    "BOOLEAN",
+                    {
+                        "default": True,
+                        "label_on": "White",
+                        "label_off": "Black",
+                    },
+                ),
             },
             "optional": {},
         }
@@ -54,7 +62,14 @@ class FindContours:
     CATEGORY = "Teeth"
 
     def findContours(
-        self, image, threshold_thresh, min_width, min_height, max_width, max_height
+        self,
+        image,
+        threshold_thresh,
+        min_width,
+        min_height,
+        max_width,
+        max_height,
+        detect_white_contours,
     ):
         image = (image * 255).to(torch.uint8)
         image = image.squeeze(0).numpy()
@@ -65,6 +80,16 @@ class FindContours:
         _, binary_image = cv2.threshold(
             gray_image, threshold_thresh, 255, cv2.THRESH_BINARY
         )
+
+        # 根据轮廓颜色参数调整二值化处理
+        if detect_white_contours:
+            _, binary_image = cv2.threshold(
+                gray_image, threshold_thresh, 255, cv2.THRESH_BINARY
+            )
+        else:
+            _, binary_image = cv2.threshold(
+                gray_image, threshold_thresh, 255, cv2.THRESH_BINARY_INV
+            )
 
         # 提取轮廓
         contours, _ = cv2.findContours(
@@ -77,7 +102,15 @@ class FindContours:
         # 创建一个普通的mask用来显示轮廓
         contoursMask = np.zeros_like(gray_image, dtype=np.uint8)  # 创建一个全0的mask
         gray_image_rgb = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
-        for contour in contours:
+        colors = [
+            (0, 255, 0),  # 绿色
+            (255, 0, 0),  # 蓝色
+            (0, 0, 255),  # 红色
+            (255, 255, 0),  # 黄色
+            (255, 0, 255),  # 品红色
+            (0, 255, 255),  # 青色
+        ]
+        for i, contour in enumerate(contours):
             # 计算轮廓的面积
             area = cv2.contourArea(contour)
 
@@ -117,7 +150,8 @@ class FindContours:
                         "min_rect_center": (int(center_x), int(center_y)),
                     }
                 )
-                cv2.drawContours(gray_image_rgb, [contour], -1, (0, 255, 0), 1)
+                color = colors[i % len(colors)]  # 循环使用颜色
+                cv2.drawContours(gray_image_rgb, [contour], -1, color, 3)
                 cv2.drawContours(contoursMask, [contour], -1, 255, -1)
         contoured_image_rgb = torch.from_numpy(gray_image_rgb).unsqueeze(0) / 255.0
 
