@@ -1,12 +1,7 @@
-import { app } from "../../../scripts/app.js";
-// import { api } from "../../../scripts/api.js";
+import { app } from "../../scripts/app.js";
 
 app.registerExtension({
   name: "comfy.teeth.imageWidgets",
-  async setup() {
-    // console.log("teeth setup teeth setup teeth setup teeth setup teeth setup teeth setupsetup teeth setup teeth setup teeth setup teeth setup teeth setup ");
-    // alert("Setup complete!");
-  },
   async nodeCreated(node) {
     if (["teeth FindContours"].includes(node.comfyClass)) {
       const inputEl = document.createElement("textarea");
@@ -27,6 +22,11 @@ app.registerExtension({
       inputEl.addEventListener("input", () => {
         widget.callback?.(widget.value);
       });
+    }
+    if (["teeth RunPythonCode"].includes(node.comfyClass)) {
+      const color = "#255073";
+      node.bgcolor = color; // 设置背景颜色
+      node.color = color; // 设置标题栏的颜色
     }
   },
   async beforeRegisterNodeDef(nodeType, nodeData, app) {
