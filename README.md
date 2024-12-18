@@ -14,6 +14,13 @@
 This command clones the repository into your `ComfyUI/custom_nodes/` directory. You should now be able to access and use the nodes from this repository.
 
 
+## 安装依赖
+一般不需要执行这个步骤, 因为这些依赖比较常用, 你电脑上的ComfyUI的其他插件, 应该已经装过这些依赖了
+```
+pip install -r requirements.txt
+```
+
+
 ## workflow example:
 获取轮廓  
 ![workflow](githubImg/workflow.png)  
