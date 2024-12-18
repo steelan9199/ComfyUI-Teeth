@@ -27,7 +27,9 @@ This command clones the repository into your `ComfyUI/custom_nodes/` directory. 
 
 如果能帮助到您, 我很开心,   
 打赏一杯咖啡, 就会更开心.  
-<div style="display: flex;">
-  <div style="width: 50%;"><img src="githubImg/wx.jpg" style="width: 300px;"></div>
-  <div style="width: 50%;"><img src="githubImg/zfb.jpg" style="width: 250px;"></div>
-</div>
+<table>
+  <tr>
+    <td width="50%"><img src="githubImg/wx.jpg" width="300px"></td>
+    <td width="50%"><img src="githubImg/zfb.jpg" width="250px"></td>
+  </tr>
+</table>
