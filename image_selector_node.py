@@ -2,6 +2,14 @@ import torch
 import codecs
 
 
+class AnyType(str):
+    def __ne__(self, __value: object) -> bool:
+        return False
+
+
+any_typ = AnyType("*")
+
+
 class indexList:
     @classmethod
     def INPUT_TYPES(s):
@@ -12,7 +20,7 @@ class indexList:
             }
         }
 
-    RETURN_TYPES = ("LIST",)
+    RETURN_TYPES = (any_typ,)
     RETURN_NAMES = ("element",)
 
     FUNCTION = "getIndex"
@@ -28,7 +36,7 @@ class indexList:
                 )
         elif isinstance(input_list, torch.Tensor):
             if 0 <= index < input_list.shape[0]:
-                return (input_list[index: index + 1].clone(),)
+                return (input_list[index : index + 1].clone(),)
             else:
                 raise IndexError(
                     f"Index {index} is out of range for tensor of shape {input_list.shape}"
