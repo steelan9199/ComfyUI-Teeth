@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-teeth"
+description = "NODES: GetValueByIndexFromList, TextSplitByDelimiter, GetFirstSeg, FindContours"
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["opencv-python", "torch", "numpy", "Pillow"]
+
+[project.urls]
+Repository = "https://github.com/steelan9199/ComfyUI-Teeth"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Teeth"
+Icon = ""
