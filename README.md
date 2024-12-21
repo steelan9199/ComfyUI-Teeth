@@ -4,6 +4,7 @@
 - 增加 `Teeth Get First Seg`, 获取第一个seg
 - 增加 `Teeth Find Contours`, 获取图片中的轮廓list
 - 增加 `Teeth Split Grid Image`, 分割九(四)宫格图片  
+- 增加 `Teeth Image Grid Lines`, 图片上面添加宫格线
 
 
 ## Installation
@@ -30,6 +31,9 @@ pip install -r requirements.txt
 
 分割九(四)宫格图片  
 ![runPython](githubImg/splitGridImage.jpg)  
+  
+图片上面添加宫格线  
+![runPython](githubImg/image_grid_lines.jpg)  
   
 
 如果能帮助到您, 我很开心,   

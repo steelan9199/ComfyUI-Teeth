@@ -3,6 +3,7 @@ from .get_first_seg import GetFirstSeg
 from .findContours import FindContours
 from .run_python_code import RunPythonCode
 from .splitGridImage import SplitGridImage
+from .image_grid_lines import ImageGridLines
 
 
 NODE_CLASS_MAPPINGS = {
@@ -12,6 +13,7 @@ NODE_CLASS_MAPPINGS = {
     "teeth FindContours": FindContours,
     "teeth RunPythonCode": RunPythonCode,
     "teeth SplitGridImage": SplitGridImage,
+    "teeth ImageGridLines": ImageGridLines,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
     "teeth GetValueByIndexFromList": "Teeth Get Value By Index From List",
@@ -20,6 +22,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "teeth FindContours": "Teeth Find Contours",
     "teeth RunPythonCode": "Teeth Run Python Code",
     "teeth SplitGridImage": "Teeth Split Grid Image",
+    "teeth ImageGridLines": "Teeth Image Grid Lines",
 }
 
 WEB_DIRECTORY = "./js"

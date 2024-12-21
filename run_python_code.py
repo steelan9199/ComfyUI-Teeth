@@ -1,4 +1,8 @@
 import textwrap
+import numpy as np
+import torch
+import PIL
+import re
 
 
 class AnyType(str):
@@ -46,9 +50,16 @@ class RunPythonCode:
 
         # 创建一个局部字典作为 exec() 的命名空间
         local_vars = inputs.copy()
+        # Create a dictionary for the global namespace
+        global_vars = {
+            "PIL": PIL,
+            "np": np,
+            "torch": torch,
+            "re": re,
+        }
         try:
             # 执行 Python 代码
-            exec(dedented_code, {}, local_vars)
+            exec(dedented_code, global_vars, local_vars)
             # 确保 result 是一个列表
             result = local_vars.get("result", None)
             if result is None:
