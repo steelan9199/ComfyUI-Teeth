@@ -33,37 +33,26 @@ class indexList:
     def get_element(self, input_list, index):
         index = index[0]
         if isinstance(input_list, (list, tuple)):
-            if -len(input_list) <= index < len(input_list):
-                element = input_list[index]
-                if isinstance(element, torch.Tensor):
-                    return (element,)  # Tensor type, return directly
-                elif isinstance(element, np.ndarray):
-                    return (element,)  # numpy array, return directly
-                elif isinstance(element, int):
-                    return (element,)  # 整数, 直接返回
-                elif isinstance(element, float):
-                    return (element,)  # 浮点数, 直接返回
-                elif isinstance(element, str):
-                    return (element,)  # 字符串, 直接返回
-                else:
-                    return (torch.tensor([element]),)  # Fallback: convert to tensor
-            else:
-                raise IndexError(
-                    f"Index {index} is out of range for list of length {len(input_list)}"
-                )
-        elif isinstance(input_list, torch.Tensor):
-            if 0 <= index < input_list.shape[0]:
-                return (
-                    input_list[index : index + 1].clone(),
-                )  # Always return tensor slice for tensor input
-            else:
-                raise IndexError(
-                    f"Index {index} is out of range for tensor of shape {input_list.shape}"
-                )
-        else:
-            raise TypeError(
-                f"Input must be a list, tuple, or tensor, got {type(input_list)}, value is {input_list}"
+            # print("[indexList] input_list is a list or tuple.")
+            # print(f"List length: {len(input_list)}")
+            # print("input_list")
+            # print("-----------")
+            # print(input_list)
+            # print("-----------")
+            elements = input_list
+            are_all_tensors = all(
+                isinstance(element, torch.Tensor) for element in elements
             )
+            if are_all_tensors:
+                element = input_list[index]
+                return (element,)
+            else:
+                print("[indexList] input_list is not all tensors.")
+                elements = elements[0]
+                return (elements[index],)
+        else:
+            print("[indexList] input_list is not a list or tuple.")
+            raise TypeError(f"Input must be a list or tuple, got {type(input_list)}")
 
 
 class TextSplitByDelimiter:
