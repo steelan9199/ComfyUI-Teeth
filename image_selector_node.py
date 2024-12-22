@@ -27,6 +27,8 @@ class indexList:
     CATEGORY = "Teeth"
 
     def getIndex(self, input_list, index):
+        # 打印input_list类型
+        print(f"input_list type: {type(input_list)}")
         if isinstance(input_list, (list, tuple)):
             if 0 <= index < len(input_list):
                 return (input_list[index],)

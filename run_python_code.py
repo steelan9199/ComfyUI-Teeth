@@ -63,9 +63,7 @@ class RunPythonCode:
             # 确保 result 是一个列表
             result = local_vars.get("result", None)
             if result is None:
-                print(
-                    "Warning: 'result' variable not defined in user code. Returning None."
-                )
+                print("Warning: 'result' is undefined or None. Returning None.")
                 return (None,)
             else:
                 return (result,)
