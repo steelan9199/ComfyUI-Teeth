@@ -15,7 +15,7 @@ class indexList:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "input_list": ("LIST", {}),
+                "input_list": (any_typ, {}),
                 "index": ("INT", {"default": 0, "min": 0, "max": 1000000, "step": 1}),
             }
         }
