@@ -1,5 +1,6 @@
 import torch
 import codecs
+import numpy as np
 
 
 class AnyType(str):
@@ -16,29 +17,45 @@ class indexList:
         return {
             "required": {
                 "input_list": (any_typ, {}),
-                "index": ("INT", {"default": 0, "min": 0, "max": 1000000, "step": 1}),
+                "index": (
+                    "INT",
+                    {"default": 0, "min": -999999, "max": 999999, "step": 1},
+                ),
             }
         }
 
     RETURN_TYPES = (any_typ,)
     RETURN_NAMES = ("element",)
-
-    FUNCTION = "getIndex"
+    INPUT_IS_LIST = True
+    FUNCTION = "get_element"
     CATEGORY = "Teeth"
 
-    def getIndex(self, input_list, index):
-        # 打印input_list类型
-        print(f"input_list type: {type(input_list)}")
+    def get_element(self, input_list, index):
+        index = index[0]
         if isinstance(input_list, (list, tuple)):
-            if 0 <= index < len(input_list):
-                return (input_list[index],)
+            if -len(input_list) <= index < len(input_list):
+                element = input_list[index]
+                if isinstance(element, torch.Tensor):
+                    return (element,)  # Tensor type, return directly
+                elif isinstance(element, np.ndarray):
+                    return (element,)  # numpy array, return directly
+                elif isinstance(element, int):
+                    return (element,)  # 整数, 直接返回
+                elif isinstance(element, float):
+                    return (element,)  # 浮点数, 直接返回
+                elif isinstance(element, str):
+                    return (element,)  # 字符串, 直接返回
+                else:
+                    return (torch.tensor([element]),)  # Fallback: convert to tensor
             else:
                 raise IndexError(
                     f"Index {index} is out of range for list of length {len(input_list)}"
                 )
         elif isinstance(input_list, torch.Tensor):
             if 0 <= index < input_list.shape[0]:
-                return (input_list[index : index + 1].clone(),)
+                return (
+                    input_list[index : index + 1].clone(),
+                )  # Always return tensor slice for tensor input
             else:
                 raise IndexError(
                     f"Index {index} is out of range for tensor of shape {input_list.shape}"
