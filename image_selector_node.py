@@ -33,12 +33,6 @@ class indexList:
     def get_element(self, input_list, index):
         index = index[0]
         if isinstance(input_list, (list, tuple)):
-            # print("[indexList] input_list is a list or tuple.")
-            # print(f"List length: {len(input_list)}")
-            # print("input_list")
-            # print("-----------")
-            # print(input_list)
-            # print("-----------")
             elements = input_list
             are_all_tensors = all(
                 isinstance(element, torch.Tensor) for element in elements
