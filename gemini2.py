@@ -1,5 +1,5 @@
 import folder_paths
-from PIL import Image
+import PIL
 import torch
 from google import genai
 from google.genai import types
@@ -32,12 +32,28 @@ any_typ = AnyType("*")
 
 class Gemini2:
     def tensor_to_pil(self, tensor):
-        # 将 ComfyUI 的图像 tensor 转换为 PIL Image 对象
-        i = 255.0 * tensor.cpu().numpy()
-        img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
+        tensor = tensor.cpu().squeeze()
+        print("Shape after squeeze:", tensor.shape)
+
+        if tensor.ndim == 3:
+            if tensor.shape[0] == 3:
+                tensor = tensor.permute(1, 2, 0)
+            elif tensor.shape[2] == 3:
+                pass
+            else:
+                raise ValueError(
+                    f"Tensor shape {tensor.shape} is not supported. Expected (3, H, W) or (H, W, 3)"
+                )
+        else:
+            raise ValueError(f"Tensor shape {tensor.shape} is not supported.")
+
+        print("Shape before converting to PIL:", tensor.shape)
+        tensor = tensor.clamp(0, 1) * 255
+
+        img = PIL.Image.fromarray(tensor.numpy().astype(np.uint8))
         return img
 
-    def get_api_key(api_name: str) -> str:
+    def get_api_key(self, api_name: str) -> str:
         api_key_ini_file = os.path.join(
             os.path.dirname(os.path.normpath(__file__)), "api_key.ini"
         )
@@ -77,8 +93,6 @@ class Gemini2:
 
     @classmethod
     def INPUT_TYPES(s):
-        input_dir = folder_paths.get_input_directory()
-        print("input_dir", input_dir)
         return {
             "required": {
                 "model": (
@@ -135,16 +149,6 @@ class Gemini2:
             elif isinstance(data, torch.Tensor):
                 # 图像
                 pil_image = self.tensor_to_pil(data)
-
-                # 生成一个唯一的文件名，例如使用时间戳
-                import time
-
-                timestamp = int(time.time() * 1000)
-                temp_folder = r"D:\temp"
-                filename = os.path.join(temp_folder, f"image_{timestamp}.jpg")
-                pil_image.save(filename, format="JPEG")
-                log(f"Image saved to: {filename}")  # 打印保存路径
-
                 # 使用 BytesIO 将 PIL 图像保存到内存中的字节流
                 byte_stream = io.BytesIO()
                 pil_image.save(byte_stream, format="JPEG")
@@ -154,7 +158,7 @@ class Gemini2:
                 )
             else:
                 raise ValueError(
-                    f"Error: Input '{input_name}' has an unsupported type: {type(data)}. Only text (string) and images (tensor) are allowed."
+                    f"Error: Input '{input_name}' has an unsupported type: {type(data)}. Only text and image are allowed."
                 )
         # 检查inputItems的长度, 如果长度为0, 就抛出错误, 提示用户.
         if len(inputItems) == 0:
