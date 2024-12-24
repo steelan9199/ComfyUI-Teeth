@@ -3,7 +3,7 @@ name = "comfyui-teeth"
 description = "Run Python code, Outline, List, Four-quadrant grid, Nine-square grid"
 version = "1.0.2"
 license = {file = "LICENSE"}
-dependencies = ["opencv-python", "torch", "numpy", "Pillow"]
+dependencies = ["opencv-python", "torch", "numpy", "Pillow", "google-genai"]
 
 [project.urls]
 Repository = "https://github.com/steelan9199/ComfyUI-Teeth"

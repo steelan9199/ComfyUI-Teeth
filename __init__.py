@@ -4,6 +4,7 @@ from .findContours import FindContours
 from .run_python_code import RunPythonCode
 from .splitGridImage import SplitGridImage
 from .image_grid_lines import ImageGridLines
+from .gemini2 import Gemini2
 
 
 NODE_CLASS_MAPPINGS = {
@@ -14,6 +15,7 @@ NODE_CLASS_MAPPINGS = {
     "teeth RunPythonCode": RunPythonCode,
     "teeth SplitGridImage": SplitGridImage,
     "teeth ImageGridLines": ImageGridLines,
+    "teeth Gemini2": Gemini2,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
     "teeth GetValueByIndexFromList": "Teeth Get Value By Index From List",
@@ -23,6 +25,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "teeth RunPythonCode": "Teeth Run Python Code",
     "teeth SplitGridImage": "Teeth Split Grid Image",
     "teeth ImageGridLines": "Teeth Image Grid Lines",
+    "teeth Gemini2": "Teeth Gemini2",
 }
 
 WEB_DIRECTORY = "./js"
