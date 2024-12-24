@@ -1,4 +1,3 @@
-import folder_paths
 import PIL
 import torch
 from google import genai
