@@ -1,0 +1,15 @@
+[project]
+name = "ComfyUI-Teeth"
+description = "Run Python code, Outline, List, Four-quadrant grid, Nine-square grid"
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["opencv-python", "torch", "numpy", "Pillow"]
+
+[project.urls]
+Repository = "https://github.com/steelan9199/ComfyUI-Teeth"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "yashu"
+DisplayName = "ComfyUI-Teeth"
+Icon = ""
