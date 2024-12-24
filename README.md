@@ -5,6 +5,7 @@
 - 增加 `Teeth Find Contours`, 获取图片中的轮廓list
 - 增加 `Teeth Split Grid Image`, 分割九(四)宫格图片  
 - 增加 `Teeth Image Grid Lines`, 图片上面添加宫格线
+- 增加 `Teeth Gemini2`, Gemini2 AI问答, 6个输入端口是可选的, 名字都是prompt, 支持文本和图片.
 
 
 ## Installation
@@ -34,6 +35,11 @@ pip install -r requirements.txt
   
 图片上面添加宫格线  
 ![runPython](githubImg/image_grid_lines.jpg)  
+  
+Gemini2 AI问答  
+Question: I sent you several images, which ones have animals? Which ones have people? Answer in Chinese.  
+Answer: The first image has a person. The second image has a cat. The third image has people and an animal (it looks like a dog).  
+![runPython](githubImg/gemini2.jpg)  
   
 
 如果能帮助到您, 我很开心,   
