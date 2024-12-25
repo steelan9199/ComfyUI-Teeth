@@ -6,6 +6,8 @@
 - 增加 `Teeth Split Grid Image`, 分割九(四)宫格图片  
 - 增加 `Teeth Image Grid Lines`, 图片上面添加宫格线
 - 增加 `Teeth Gemini2`, Gemini2 AI问答, 6个输入端口是可选的, 名字都是prompt, 支持文本和图片.
+- 增加 `Teeth Load Text File`, 加载文本文件
+- 增加 `Teeth Save Text File`, 保存文本文件
 
 
 ## Installation
