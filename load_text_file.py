@@ -2,6 +2,7 @@ import os
 import time
 import uuid
 import folder_paths
+import hashlib
 
 
 def log(message: str, message_type: str = "info"):
@@ -77,21 +78,45 @@ class SaveTextFile:
                     {"default": "", "multiline": False, "forceInput": True},
                 ),
                 "folder": ("STRING", {"default": "output"}),
-                "filename": ("STRING", {"default": "saved_text_"}),
+                "filename": ("STRING", {"default": "saved_text.txt"}),
                 "add_timestamp": ("BOOLEAN", {"default": True}),
                 "add_random": ("BOOLEAN", {"default": True}),
                 "encoding": (
                     ["utf-8", "gbk", "latin-1", "ascii"],
                     {"default": "utf-8"},
                 ),
+                "always_run": ("BOOLEAN", {"default": False}),
             }
         }
+
+    @classmethod
+    def IS_CHANGED(
+        cls,
+        text,
+        folder,
+        filename,
+        add_timestamp,
+        add_random,
+        encoding,
+        always_run,
+        **kwargs,
+    ):
+        if always_run:
+            return float("NaN")
+        # 注意这里, 我们将always_run也加入hash
+        input_data = f"{text}{folder}{filename}{add_timestamp}{add_random}{encoding}{always_run}".encode(
+            "utf-8"
+        )
+        return hashlib.sha256(input_data).hexdigest()
 
     RETURN_TYPES = ()
     FUNCTION = "write_file"
     CATEGORY = "Teeth"
+    OUTPUT_NODE = True
 
-    def write_file(self, text, folder, filename, add_timestamp, add_random, encoding):
+    def write_file(
+        self, text, folder, filename, add_timestamp, add_random, encoding, always_run
+    ):
         # 检查文件夹路径是否为空
         if not folder:
             log("Error: Folder path is required.", message_type="error")
@@ -112,7 +137,6 @@ class SaveTextFile:
                 raise
         # 提取文件名和后缀
         name_without_ext, ext = os.path.splitext(filename)
-
         timestamp = ""
         if add_timestamp:
             timestamp = time.strftime("%Y%m%d_%H%M%S")
@@ -123,7 +147,6 @@ class SaveTextFile:
         # 重新组合文件名
         new_filename = f"{name_without_ext}{timestamp}{random_str}{ext}"
         file_path = os.path.join(folder, new_filename)
-
         try:
             with open(file_path, "w", encoding=encoding) as f:
                 f.write(text)
