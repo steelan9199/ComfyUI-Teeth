@@ -30,6 +30,7 @@ class LoadTextFile:
                     ["utf-8", "gbk", "latin-1", "ascii"],
                     {"default": "utf-8"},
                 ),
+                "always_run": ("BOOLEAN", {"default": False}),
             },
         }
 
@@ -38,7 +39,22 @@ class LoadTextFile:
     FUNCTION = "read_file"
     CATEGORY = "Teeth"
 
-    def read_file(self, folder, filename, encoding):
+    @classmethod
+    def IS_CHANGED(
+        cls,
+        folder,
+        filename,
+        encoding,
+        always_run,
+        **kwargs,
+    ):
+        if always_run:
+            return float("NaN")
+
+        input_data = f"{folder}{filename}{encoding}".encode("utf-8")
+        return hashlib.sha256(input_data).hexdigest()
+
+    def read_file(self, folder, filename, encoding, always_run):
         file_path = os.path.join(folder, filename)
 
         if not os.path.exists(file_path):
