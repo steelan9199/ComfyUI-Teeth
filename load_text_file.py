@@ -72,7 +72,10 @@ class SaveTextFile:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "text": ("STRING"),
+                "text": (
+                    "STRING",
+                    {"default": "", "multiline": False, "forceInput": True},
+                ),
                 "folder": ("STRING", {"default": "output"}),
                 "filename_prefix": ("STRING", {"default": "saved_text_"}),
                 "add_timestamp": ("BOOLEAN", {"default": True}),
