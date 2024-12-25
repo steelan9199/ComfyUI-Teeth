@@ -1,0 +1,29 @@
+/* style.css */
+.teeth-open-dir-button {
+  /* 选项 1: 柔和的蓝色系，与 ComfyUI 的蓝色调节点相近 */
+  background-color: #4c6b8b !important; /* 较深的柔和蓝色 */
+  color: #f5f5f5 !important; /* 浅灰色文字，提高对比度 */
+
+  /* 选项 2: 灰蓝色系，更低调 */
+  /* background-color: #4d5866 !important; /* 灰蓝色 */
+  /* color: #e0e0e0 !important;            /* 浅灰色文字 */
+
+  /* 选项 3: 与默认节点背景相近，通过文字颜色区分 */
+  /* background-color: #555555 !important; /* 与默认节点背景相近 */
+  /* color: #fafafa !important;            /* 亮白色文字 */
+
+  border: none !important;
+  padding: 5px 10px !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important; /* 添加过渡效果 */
+}
+
+.teeth-open-dir-button:hover {
+  /* 鼠标悬停时稍微亮一点 */
+  background-color: #5d7c9c !important; /* 悬停时更亮一些 */
+  /* 对于选项 2: */
+  /* background-color: #5e6978 !important; */
+  /* 对于选项 3: */
+  /* background-color: #666666 !important; */
+}

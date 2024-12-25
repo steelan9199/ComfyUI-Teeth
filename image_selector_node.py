@@ -1,6 +1,5 @@
 import torch
 import codecs
-import numpy as np
 
 
 class AnyType(str):
