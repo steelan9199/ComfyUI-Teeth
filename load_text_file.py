@@ -77,7 +77,7 @@ class SaveTextFile:
                     {"default": "", "multiline": False, "forceInput": True},
                 ),
                 "folder": ("STRING", {"default": "output"}),
-                "filename_prefix": ("STRING", {"default": "saved_text_"}),
+                "filename": ("STRING", {"default": "saved_text_"}),
                 "add_timestamp": ("BOOLEAN", {"default": True}),
                 "add_random": ("BOOLEAN", {"default": True}),
                 "encoding": (
@@ -91,9 +91,7 @@ class SaveTextFile:
     FUNCTION = "write_file"
     CATEGORY = "Teeth"
 
-    def write_file(
-        self, text, folder, filename_prefix, add_timestamp, add_random, encoding
-    ):
+    def write_file(self, text, folder, filename, add_timestamp, add_random, encoding):
         # 检查文件夹路径是否为空
         if not folder:
             log("Error: Folder path is required.", message_type="error")
@@ -112,6 +110,8 @@ class SaveTextFile:
                     message_type="error",
                 )
                 raise
+        # 提取文件名和后缀
+        name_without_ext, ext = os.path.splitext(filename)
 
         timestamp = ""
         if add_timestamp:
@@ -120,9 +120,10 @@ class SaveTextFile:
         random_str = ""
         if add_random:
             random_str = "_" + str(uuid.uuid4())[:8]
+        # 重新组合文件名
+        new_filename = f"{name_without_ext}{timestamp}{random_str}{ext}"
+        file_path = os.path.join(folder, new_filename)
 
-        filename = f"{filename_prefix}{timestamp}{random_str}.txt"
-        file_path = os.path.join(folder, filename)
         try:
             with open(file_path, "w", encoding=encoding) as f:
                 f.write(text)

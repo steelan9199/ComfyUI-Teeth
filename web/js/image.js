@@ -62,16 +62,8 @@ app.registerExtension({
         // widget.callback?.(buttonEl.value, LiteGraph.active_canvas, node, pos, event);
         // api方式获取路径
         const folder_Widget = node.widgets.find((w) => w.name === "folder");
-        const filename_prefix_Widget = node.widgets.find((w) => w.name === "filename_prefix");
-        const add_timestamp_Widget = node.widgets.find((w) => w.name === "add_timestamp");
-        const add_random_Widget = node.widgets.find((w) => w.name === "add_random");
-        const encoding_Widget = node.widgets.find((w) => w.name === "encoding");
         const data = {
           folder: folder_Widget.value,
-          filename_prefix: filename_prefix_Widget.value,
-          add_timestamp: add_timestamp_Widget.value,
-          add_random: add_random_Widget.value,
-          encoding: encoding_Widget.value
         };
         fetch("/teeth/gemini/opendir", {
           method: "POST",
