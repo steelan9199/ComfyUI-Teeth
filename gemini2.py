@@ -104,6 +104,65 @@ class Gemini2:
                         "gemini-1.5-flash-8b(15RPM,低能)",
                     ],
                 ),
+                "temperature": (
+                    "FLOAT",
+                    {
+                        "default": 0.5,
+                        "min": 0.0,
+                        "max": 1.0,
+                        "step": 0.01,
+                        "display": "slider",
+                    },
+                ),
+                "top_p": (
+                    "FLOAT",
+                    {
+                        "default": 0.9,
+                        "min": 0.0,
+                        "max": 1.0,
+                        "step": 0.01,
+                        "display": "slider",
+                    },
+                ),
+                "top_k": (
+                    "INT",
+                    {
+                        "default": 20,
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "display": "slider",
+                    },
+                ),
+                "max_output_tokens": (
+                    "INT",
+                    {
+                        "default": 8192,
+                        "min": 1,
+                        "max": 8192,
+                        "step": 1,
+                    },
+                ),
+                "presence_penalty": (
+                    "FLOAT",
+                    {
+                        "default": 0.3,
+                        "min": -2.0,
+                        "max": 2.0,
+                        "step": 0.01,
+                        "display": "slider",
+                    },
+                ),
+                "frequency_penalty": (
+                    "FLOAT",
+                    {
+                        "default": 0.3,
+                        "min": -2.0,
+                        "max": 2.0,
+                        "step": 0.01,
+                        "display": "slider",
+                    },
+                ),
                 "prompt": (
                     "STRING",
                     {
@@ -134,7 +193,18 @@ class Gemini2:
     FUNCTION = "doit"
     CATEGORY = "Teeth"
 
-    def doit(self, model, prompt, **kwargs):
+    def doit(
+        self,
+        model,
+        prompt,
+        temperature,
+        top_p,
+        top_k,
+        max_output_tokens,
+        presence_penalty,
+        frequency_penalty,
+        **kwargs,
+    ):
         api_key = self.get_api_key("google_api_key")
         inputItems = []
         if prompt:
@@ -173,6 +243,23 @@ class Gemini2:
             model=model_name,
             contents=inputItems,
             config=types.GenerateContentConfig(
+                temperature=temperature,
+                top_p=top_p,
+                top_k=top_k,
+                candidate_count=1,
+                max_output_tokens=max_output_tokens,
+                presence_penalty=presence_penalty,
+                frequency_penalty=frequency_penalty,
+            ),
+        )
+        return (response.text,)
+
+
+"""
+        response = client.models.generate_content(
+            model=model_name,
+            contents=inputItems,
+            config=types.GenerateContentConfig(
                 temperature=0.5,
                 top_p=0.9,
                 top_k=20,
@@ -182,9 +269,61 @@ class Gemini2:
                 frequency_penalty=0.3,
             ),
         )
-        return (response.text,)
 
-"""
+参数范围和默认值：
+
+temperature:
+
+范围: 0.0 - 1.0
+
+步长: 0.01
+
+默认值: 0.5
+
+top_p:
+
+范围: 0.0 - 1.0
+
+步长: 0.01
+
+默认值: 0.9
+
+top_k:
+
+范围: 0 - 100
+
+步长: 1
+
+默认值: 20
+
+max_output_tokens:
+
+范围: 1 - 8192
+
+步长: 1
+
+默认值: 8192
+
+presence_penalty:
+
+范围: -2.0 - 2.0
+
+步长: 0.01
+
+默认值: 0.3
+
+frequency_penalty:
+
+范围: -2.0 - 2.0
+
+步长: 0.01
+
+默认值: 0.3
+
+stop_sequences:
+
+默认值: "" (空字符串)
+
 好的，我查看了你提供的 Google AI Python 客户端库的官方文档：[https://googleapis.github.io/python-genai/](https://googleapis.github.io/python-genai/)
 
 关于 `GenerateContentConfig` 中的各个参数，我来解释一下它们的含义、最佳值选择的考量以及文档中记录的默认值：
