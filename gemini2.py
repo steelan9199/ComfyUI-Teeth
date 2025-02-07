@@ -98,6 +98,9 @@ class Gemini2:
             "required": {
                 "model": (
                     [
+                        "gemini-2.0-flash-001(Gemini 2.0 Flash 的正式版)",
+                        "gemini-2.0-flash-thinking-exp-01-21(Gemini 2.0 Flash 思维模型背后的模型的最新预览版)",
+                        "gemini-2.0-pro-exp-02-05(Gemini 2.0 Pro 的实验性公开预览版)",
                         "gemini-1.5-flash(15RPM,平衡)",
                         "gemini-2.0-flash-exp(10RPM,最新)",
                         "gemini-1.5-pro(2RPM,最佳)",
@@ -239,19 +242,49 @@ class Gemini2:
         # 发送给 Gemini
         client = genai.Client(api_key=api_key)
         model_name = model.split("(")[0]
+
+        # "gemini-2.0-flash-thinking-exp-01-21(Gemini 2.0 Flash 思维模型背后的模型的最新预览版)",
+        # "gemini-2.0-pro-exp-02-05(Gemini 2.0 Pro 的实验性公开预览版)",
+        # 定义特殊模型列表
+        special_models = [
+            "gemini-2.0-flash-thinking-exp-01-21",
+            "gemini-2.0-pro-exp-02-05",
+        ]
+        # 判断是否是特殊模型
+        is_special_model = model_name in special_models
+
+        # 构建生成配置
+        config_params = {
+            "temperature": temperature,
+            "top_p": top_p,
+            "top_k": top_k,
+            "candidate_count": 1,
+            "max_output_tokens": max_output_tokens,
+        }
+        # 如果不是特殊模型，添加 presence_penalty 和 frequency_penalty 参数
+        if not is_special_model:
+            config_params["presence_penalty"] = presence_penalty
+            config_params["frequency_penalty"] = frequency_penalty
+        # 调用生成内容接口
         response = client.models.generate_content(
             model=model_name,
             contents=inputItems,
-            config=types.GenerateContentConfig(
-                temperature=temperature,
-                top_p=top_p,
-                top_k=top_k,
-                candidate_count=1,
-                max_output_tokens=max_output_tokens,
-                presence_penalty=presence_penalty,
-                frequency_penalty=frequency_penalty,
-            ),
+            config=types.GenerateContentConfig(**config_params),
         )
+
+        # response = client.models.generate_content(
+        #     model=model_name,
+        #     contents=inputItems,
+        #     config=types.GenerateContentConfig(
+        #         temperature=temperature,
+        #         top_p=top_p,
+        #         top_k=top_k,
+        #         candidate_count=1,
+        #         max_output_tokens=max_output_tokens,
+        #         presence_penalty=presence_penalty,
+        #         frequency_penalty=frequency_penalty,
+        #     ),
+        # )
         return (response.text,)
 
 

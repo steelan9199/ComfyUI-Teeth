@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-teeth"
 description = "Run Python code, Outline, List, Four-quadrant grid, Nine-square grid"
-version = "1.0.2"
+version = "1.0.3"
 license = {file = "LICENSE"}
 dependencies = ["opencv-python", "torch", "numpy", "Pillow", "google-genai"]
 
